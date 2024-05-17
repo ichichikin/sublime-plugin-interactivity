@@ -28,19 +28,92 @@ Copy the cloned repository to your Sublime Text Packages directory. You can find
 
 Edit the `Interactivity.sublime-settings` file in the plugin directory with your desired configurations. Example settings:
 
-```json
-{
-    "shell": "python",  // Specify the path to any shell executable. Use `##plugin##` to refer to the plugin's directory.
-    "startup_commands": "openai.api_key = 'sk-'\n",  // Define commands to run after starting the shell. Specify your OpenAI API key here for chat.py module.
-    "shutdown_commands": "exit()\n",  // Define commands to run before closing the shell.
-    "shell_params": "-qi\n##plugin##py_manager.py",  // Specify shell command-line arguments, one per line. Use `##plugin##` to refer to the plugin's directory.
-    "enviroment_variables": "PYTHONIOENCODING=utf8",  //Set environment variables, one per line. Use `##plugin##` to refer to the plugin's directory.
-    "lines_to_suppress": 0,  // Specify the number of initial lines to skip (e.g., shell greetings).
-    "text_shortcuts": "@ -> ##param##\n@@ -> chat4(r\"\"\"##param## \"\"\")",  // Define text shortcuts for running commands. The text before '->' is the shortcut; the text after is the command to execute. Use `##param##` to include the line after the shortcut in the command.
-    "prepend_output": " ",  // Prepend the output with custom text.
-    "append_output": "",  // Append the output with custom text.
-    "output_filter": "^(?:(?:>>> )|(?:\\.\\.\\. ))+"  // Apply a RegExp pattern to filter the output.
-}
+Specify the path to any shell executable. Use `##plugin##` to refer to the plugin's directory.
+```
+"shell": "python",
+```
+
+Define commands to run after starting the shell. Specify your OpenAI API key here for chat.py module.
+```
+"startup_commands": "openai.api_key = 'sk-'",
+```
+
+Define commands to run before closing the shell.
+```
+"shutdown_commands": "exit()",
+```
+
+Specify shell command-line arguments, one per line. Use `##plugin##` to refer to the plugin's directory.
+```
+"shell_params": "-qi\n##plugin##modules/py_manager.py",
+```
+
+Set environment variables, one per line. Use `##plugin##` to refer to the plugin's directory.
+```
+"enviroment_variables": "PYTHONIOENCODING=utf8",
+```
+
+Specify the number of initial lines to skip (e.g., shell greetings).
+```
+"lines_to_suppress": 0,
+```
+
+Prepend the output with custom text.
+```
+"prepend_output": " ",
+```
+
+Append the output with custom text.
+```
+"append_output": "",
+```
+
+Apply a RegExp pattern to filter the output.
+```
+"output_filter": "^(?:(?:>>> )|(?:\\.\\.\\. ))+"
+```
+
+Define text shortcuts for running commands. The text before '->' is the shortcut; the text after is the command to execute. Use `##param##` to include the line after the shortcut in the command.
+```
+"text_shortcuts": "@ -> ##param##\n@@ -> chat4(r\"\"\"##param## \"\"\")",
+```
+
+#### Understanding the Shortcuts
+
+Define text shortcuts to run specific commands with the `text_shortcuts` setting. The text before '->' is the shortcut; the text after is the command to execute. Use `##param##` to include the line after the shortcut in the command.
+
+##### Example 1
+
+```plaintext
+@ -> ##param##
+```
+
+- `@`: This is the shortcut you type at the beginning of a line in the editor.
+- `##param##`: This includes the text that follows the shortcut on the same line. Essentially, it allows you to insert any text directly into the command.
+
+This setup allows you to directly execute the input text as a command.
+
+##### Example 2
+
+```plaintext
+@@ -> chat4(r"""##param## """, system='Use markdown and emojis.')
+```
+
+- `@@`: This is the shortcut you type at the beginning of a line in the editor.
+- `chat4(r"""##param## """, system='Use markdown and emojis.')`: This command calls the `chat` function from `chat.py` with specific parameters.
+
+Let's break down the parameters:
+- `r"""##param## """`: This includes the text that follows the shortcut on the same line.
+- `system='Use markdown and emojis.'`: This sets the system ptompt for the chat.
+
+By using this shortcut, you can quickly initiate a chat with ChatGPT using predefined settings, making your workflow more efficient.
+
+##### Iterating Shortcuts
+
+You can iterate both shortcuts by dividing them with a new line in the editor:
+
+```plaintext
+@ -> ##param##\n@@ -> chat4(r"""##param## """, system='Use markdown and emojis.')
 ```
 
 ## Python modules collection
@@ -77,44 +150,6 @@ which python3
 
 Use the output of this command as the path in the `shell` setting.
 
-## Understanding Shortcuts
-
-Define text shortcuts to run specific commands with the `text_shortcuts` setting. The text before '->' is the shortcut; the text after is the command to execute. Use `##param##` to include the line after the shortcut in the command.
-
-### Example 1
-
-```plaintext
-@ -> ##param##
-```
-
-- `@`: This is the shortcut you type at the beginning of a line in the editor.
-- `##param##`: This includes the text that follows the shortcut on the same line. Essentially, it allows you to insert any text directly into the command.
-
-This setup allows you to directly execute the input text as a command.
-
-### Example 2
-
-```plaintext
-@@ -> chat4(r"""##param## """, system='Use markdown and emojis.')
-```
-
-- `@@`: This is the shortcut you type at the beginning of a line in the editor.
-- `chat4(r"""##param## """, system='Use markdown and emojis.')`: This command calls the `chat` function from `chat.py` with specific parameters.
-
-Let's break down the parameters:
-- `r"""##param##"""`: This includes the text that follows the shortcut on the same line.
-- `system='Use markdown and emojis.'`: This sets the system ptompt for the chat.
-
-By using this shortcut, you can quickly initiate a chat with ChatGPT using predefined settings, making your workflow more efficient.
-
-### Iterating Shortcuts
-
-You can iterate both shortcuts by dividing them with a new line in the editor:
-
-```plaintext
-@ -> ##param##
-@@ -> chat(r"""##param## """, system='Use markdown and emojis.')
-```
 
 When all is set up, you can call Python code from the Sublime Text:
 
