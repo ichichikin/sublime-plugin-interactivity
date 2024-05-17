@@ -1,0 +1,12 @@
+{
+    "shell": "python",
+    "shell_params": "-qi\n##plugin##py_manager.py",
+    "prepend_output": " ",
+    "append_output": "",
+    "text_shortcuts": "@ -> ##param##\n@@ -> chat4(r\"\"\"##param##\"\"\")",
+    "enviroment_variables": "PYTHONIOENCODING=utf8",
+    "lines_to_suppress": 0,
+    "startup_commands": "openai.api_key = 'sk-'\n",
+    "shutdown_commands": "exit()\n",
+    "output_filter": "^(?:(?:>>> )|(?:\\.\\.\\. ))+"
+}

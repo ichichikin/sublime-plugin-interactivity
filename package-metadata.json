@@ -1,0 +1,8 @@
+{
+    "name": "Interactivity",
+    "description": "A Sublime Text plugin for interactive shell scripting.",
+    "author": "ichichikin",
+    "homepage": "https://github.com/ichichikin",
+    "platforms": ["*"],
+    "sublime_text": ">=4000"
+}
