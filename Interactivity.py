@@ -102,7 +102,7 @@ def plugin_loaded() -> None:
     if interactivity_subprocess is None:
         settings = sublime.load_settings('Interactivity.sublime-settings')
         shell_path = settings.get('shell', 'python')
-        shell_path = shell_path.replace('##plugin##', os.path.dirname(os.path.realpath(__file__)) + os.sep + 'interactivity' + os.sep)
+        shell_path = shell_path.replace('##plugin##', os.path.dirname(os.path.realpath(__file__)) + os.sep)
         startup_commands = settings.get('startup_commands', '')
         interactivity_lines_to_suppress = settings.get('lines_to_suppress', 0)
         shortcuts = settings.get('text_shortcuts', '@->##param##')
@@ -113,9 +113,9 @@ def plugin_loaded() -> None:
                 interactivity_shortcuts[line[0]] = line[1]
         interactivity_shortcuts = dict(sorted(interactivity_shortcuts.items(), key=lambda item: -len(item[0])))
         shell_params = settings.get('shell_params', '')
-        shell_params = shell_params.replace('##plugin##', os.path.dirname(os.path.realpath(__file__)) + os.sep + 'interactivity' + os.sep)
+        shell_params = shell_params.replace('##plugin##', os.path.dirname(os.path.realpath(__file__)) + os.sep)
         custom_env = settings.get('enviroment_variables', '')
-        custom_env = custom_env.replace('##plugin##', os.path.dirname(os.path.realpath(__file__)) + os.sep + 'interactivity' + os.sep)
+        custom_env = custom_env.replace('##plugin##', os.path.dirname(os.path.realpath(__file__)) + os.sep)
         env = os.environ.copy()
         for e in re.split('\r?\n', custom_env):
             line = re.split('\\s*=\\s*', e)
@@ -130,9 +130,10 @@ def plugin_loaded() -> None:
                                              universal_newlines=True,
                                              env=env,
                                              bufsize=1,
+                                             encoding='utf-8',
                                              shell=True)
         if startup_commands:
-            interactivity_subprocess.stdin.write(startup_commands)
+            interactivity_subprocess.stdin.write(startup_commands + '\n')
         interactivity_thread = Thread(target=enqueue_output, args=(interactivity_subprocess.stdout, interactivity_output_queue))
         # interactivity_thread.daemon = True
         interactivity_thread.start()
@@ -160,7 +161,10 @@ def plugin_unloaded() -> None:
         settings = sublime.load_settings('Interactivity.sublime-settings')
         shutdown_commands = settings.get('shutdown_commands', '')
         if shutdown_commands:
-            interactivity_subprocess.stdin.write(shutdown_commands)
+            try:
+                interactivity_subprocess.stdin.write(shutdown_commands + '\n')
+            except:
+                pass
         interactivity_subprocess.stdin.write(f'\'%kill_routine%\'\n')
         interactivity_subprocess.kill()
         interactivity_thread.join()

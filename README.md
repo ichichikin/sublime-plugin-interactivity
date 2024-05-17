@@ -1,4 +1,4 @@
-# Interactivity Plugin for Sublime Text
+# Interactivity: Calculations and Scripts for Sublime Text
 
 Sometimes you need to compute numbers or access data while working with text. It's handy to do this without leaving the [Sublime Text](https://www.sublimetext.com/) editor, using your favorite tools like Python, Perl, Node.js, or others.
 For example, if you need to quickly calculate a project's budget while taking notes, you can type the numbers and hit Enter in the editor to execute the code in the desired REPL:
@@ -9,7 +9,6 @@ For example, if you need to quickly calculate a project's budget while taking no
 ```
 
 This plugin allows you to run shell commands and scripts directly within the editor, providing their output right alongside your written content, making your workflow more dynamic and interactive.
-By default, it supports running JavaScript, but you can also configure it to run any other shell commands.
 
 ## Installation
 
@@ -23,31 +22,11 @@ git clone https://github.com/yourusername/sublime-interactivity-plugin.git
 
 Copy the cloned repository to your Sublime Text Packages directory. You can find this directory via Preferences > Browse Packages in Sublime Text.
 
-## Usage
-### Setting Up
+## Python Modules Collection
 
-Edit the `Interactivity.sublime-settings` file in the plugin directory with your desired configurations. Example settings:
+My favorite daily tool is Python, which is why I included several sample Python modules in this plugin.
 
-```json
-{
-    "shell": "python",  // Specify the path to any shell executable. Use `##plugin##` to refer to the plugin's directory.
-    "startup_commands": "openai.api_key = 'sk-'\n",  // Define commands to run after starting the shell. Specify your OpenAI API key here for chat.py module.
-    "shutdown_commands": "exit()\n",  // Define commands to run before closing the shell.
-    "shell_params": "-qi\n##plugin##py_manager.py",  // Specify shell command-line arguments, one per line. Use `##plugin##` to refer to the plugin's directory.
-    "enviroment_variables": "PYTHONIOENCODING=utf8",  //Set environment variables, one per line. Use `##plugin##` to refer to the plugin's directory.
-    "lines_to_suppress": 0,  // Specify the number of initial lines to skip (e.g., shell greetings).
-    "text_shortcuts": "@ -> ##param##\n@@ -> chat4(r\"\"\"##param## \"\"\")",  // Define text shortcuts for running commands. The text before '->' is the shortcut; the text after is the command to execute. Use `##param##` to include the line after the shortcut in the command.
-    "prepend_output": " ",  // Prepend the output with custom text.
-    "append_output": "",  // Append the output with custom text.
-    "output_filter": "^(?:(?:>>> )|(?:\\.\\.\\. ))+"  // Apply a RegExp pattern to filter the output.
-}
-```
-
-## Python modules collection
-
-My favorite daily tool is Python. This plugin includes several essential modules that enhance productivity while working in Sublime Text.
-
-- **chat.py** Integrates ChatGPT directly with the editor.
+- **chat.py** Integrates ChatGPT directly with the editor. Remember to [set up an OpenAI API key](#setting-up).
 - **tables.py** Imports Excel and CSV tables into the editor.
 
 These modules requires following dependencies: `openai`, `pandas`, `tabulate`.
@@ -58,8 +37,143 @@ Here's a demo of how they work:
 
 <img src="demo.gif" alt="Demo" style="width:700px;"/>
 
+### Available Functions in the Modules within Sublime Text
+
+#### `chat.py`
+
+1. **chat(prompt: str, system: str = None, save_context: bool = True, model: str = 'gpt-3.5-turbo') -> None:**
+   - **Parameters:**
+     - `prompt` (str): The user query to be sent to ChatGPT.
+     - `system` (str, optional): An optional system prompt.
+     - `save_context` (bool, optional): Whether to save the chat context for continuity. Default is `True`.
+     - `model` (str, optional): The model to be used for the chat. Default is `'gpt-3.5-turbo'`.
+   - **Output:** Prints the assistant's response directly in the editor.
+
+2. **chat4(prompt: str, system: str = None, save_context: bool = True) -> None:**
+   - **Parameters:**
+     - `prompt` (str): The user query to be sent to ChatGPT 4o.
+     - `system` (str, optional): An optional system prompt.
+     - `save_context` (bool, optional): Whether to save the chat context for continuity. Default is `True`.
+   - **Output:** Prints the assistant's response directly in the editor.
+
+3. **clean_chat() -> None:**
+   - **Output:** Cleans the chat history by resetting the stored messages. This function does not produce a direct output in the editor.
+
+#### `tables.py`
+
+1. **excel_table(path: str, \*args, \*\*kwargs) -> None:**
+   - **Parameters:**
+     - `path` (str): The path to the Excel file.
+     - `*args`: Optional additional positional arguments to be passed to `pandas.read_excel`.
+     - `**kwargs`: Optional additional keyword arguments to be passed to `pandas.read_excel`.
+   - **Output:** Reads the Excel file and prints it as a markdown table directly in the editor.
+
+2. **csv_table(path: str, \*args, \*\*kwargs) -> None:**
+   - **Parameters:**
+     - `path` (str): The path to the CSV file.
+     - `*args`: Optional additional positional arguments to be passed to `pandas.read_csv`.
+     - `**kwargs`: Optional additional keyword arguments to be passed to `pandas.read_csv`.
+   - **Output:** Reads the CSV file and prints it as a markdown table directly in the editor.
+
+### Custom Functions
+You can add your custom Python scripts to the `py_modules` directory within the plugin's directory. All global functions and variables in these scripts will be accessible within the editor. You are welcome to contribute new useful scripts in your favorite language.
+
+## Setting Up
+
+Edit the `Interactivity.sublime-settings` file in the plugin directory with your desired configurations. Example settings:
+
+Specify the path to any shell executable. Use `##plugin##` to refer to the plugin's directory.
+```
+"shell": "python",
+```
+
+Define commands to run after starting the shell. Specify your OpenAI API key here for chat.py module.
+```
+"startup_commands": "openai.api_key = 'sk-'",
+```
+
+Define commands to run before closing the shell.
+```
+"shutdown_commands": "exit()",
+```
+
+Specify shell command-line arguments, one per line. Use `##plugin##` to refer to the plugin's directory.
+```
+"shell_params": "-qi\n##plugin##modules/py_manager.py",
+```
+
+Set environment variables, one per line. Use `##plugin##` to refer to the plugin's directory.
+```
+"enviroment_variables": "PYTHONIOENCODING=utf8",
+```
+
+Specify the number of initial lines to skip (e.g., shell greetings).
+```
+"lines_to_suppress": 0,
+```
+
+Prepend the output with custom text.
+```
+"prepend_output": " ",
+```
+
+Append the output with custom text.
+```
+"append_output": "",
+```
+
+Apply a RegExp pattern to filter the output.
+```
+"output_filter": "^(?:(?:>>> )|(?:\\.\\.\\. ))+"
+```
+
+Define text shortcuts for running commands. The text before '->' is the shortcut; the text after is the command to execute. Use `##param##` to include the line after the shortcut in the command.
+```
+"text_shortcuts": "@ -> ##param##\n@@ -> chat4(r\"\"\"##param## \"\"\")",
+```
+
+Aside from using shortcuts, you can also run shell execution by selecting any part of your text and hitting the [Sublime Text hotkeys](https://www.sublimetext.com/docs/key_bindings.html) bound to the package's `Interactivity` command.
+
+### Understanding the Shortcuts
+
+Define text shortcuts to run specific commands with the `text_shortcuts` setting. The text before '->' is the shortcut; the text after is the command to execute. Use `##param##` to include the line after the shortcut in the command.
+
+#### Example 1
+
+```plaintext
+@ -> ##param##
+```
+
+- `@`: This is the shortcut you type at the beginning of a line in the editor.
+- `##param##`: This includes the text that follows the shortcut on the same line. Essentially, it allows you to insert any text directly into the command.
+
+This setup allows you to directly execute the input text as a command.
+
+#### Example 2
+
+```plaintext
+@@ -> chat4(r"""##param## """, system='Use markdown and emojis.')
+```
+
+- `@@`: This is the shortcut you type at the beginning of a line in the editor.
+- `chat4(r"""##param## """, system='Use markdown and emojis.')`: This command calls the `chat` function from `chat.py` with specific parameters.
+
+Let's break down the parameters:
+- `r"""##param## """`: This includes the text that follows the shortcut on the same line.
+- `system='Use markdown and emojis.'`: This sets the system ptompt for the chat.
+
+By using this shortcut, you can quickly initiate a chat with ChatGPT using predefined settings, making your workflow more efficient.
+
+#### Iterating Shortcuts
+
+You can iterate both shortcuts by dividing them with a new line in the editor:
+
+```plaintext
+@ -> ##param##\n@@ -> chat4(r"""##param## """, system='Use markdown and emojis.')
+```
+
 ## Setting up Python integration
-You can enhance the functionality by adding custom Python scripts to the `py_modules` directory within the plugin's directory. All global functions and variables in these scripts will be accessible from the plugin.
+You can enhance the functionality by adding custom Python scripts to the `py_modules` directory within the plugin's directory. All global functions and variables in these scripts will be accessible within the editor.
 
 ### Installing Python
 
@@ -77,44 +191,6 @@ which python3
 
 Use the output of this command as the path in the `shell` setting.
 
-## Understanding Shortcuts
-
-Define text shortcuts to run specific commands with the `text_shortcuts` setting. The text before '->' is the shortcut; the text after is the command to execute. Use `##param##` to include the line after the shortcut in the command.
-
-### Example 1
-
-```plaintext
-@ -> ##param##
-```
-
-- `@`: This is the shortcut you type at the beginning of a line in the editor.
-- `##param##`: This includes the text that follows the shortcut on the same line. Essentially, it allows you to insert any text directly into the command.
-
-This setup allows you to directly execute the input text as a command.
-
-### Example 2
-
-```plaintext
-@@ -> chat4(r"""##param## """, system='Use markdown and emojis.')
-```
-
-- `@@`: This is the shortcut you type at the beginning of a line in the editor.
-- `chat4(r"""##param## """, system='Use markdown and emojis.')`: This command calls the `chat` function from `chat.py` with specific parameters.
-
-Let's break down the parameters:
-- `r"""##param##"""`: This includes the text that follows the shortcut on the same line.
-- `system='Use markdown and emojis.'`: This sets the system ptompt for the chat.
-
-By using this shortcut, you can quickly initiate a chat with ChatGPT using predefined settings, making your workflow more efficient.
-
-### Iterating Shortcuts
-
-You can iterate both shortcuts by dividing them with a new line in the editor:
-
-```plaintext
-@ -> ##param##
-@@ -> chat(r"""##param## """, system='Use markdown and emojis.')
-```
 
 When all is set up, you can call Python code from the Sublime Text:
 
@@ -129,6 +205,10 @@ I'm doing well, thanks for asking! How about you? What's on your mind today?
 @@How are you doing?
 I'm doing well, thank you for asking! How about you? How's your day going?
 ```
+
+## If You Also Use Obsidian
+
+Check out the [Interactivity: Calculations and Scripts for Obsidian](https://github.com/ichichikin/obsidian-plugin-interactivity).
 
 ## Contributing
 

@@ -1,6 +1,6 @@
 {
     "shell": "python",
-    "shell_params": "-qi\n##plugin##py_manager.py",
+    "shell_params": "-qi\n##plugin##modules/py_manager.py",
     "prepend_output": " ",
     "append_output": "",
     "text_shortcuts": "@ -> ##param##\n@@ -> chat4(r\"\"\"##param##\"\"\")",
