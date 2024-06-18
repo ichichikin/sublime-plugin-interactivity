@@ -105,25 +105,18 @@ def plugin_loaded() -> None:
         shell_path = shell_path.replace('##plugin##', os.path.dirname(os.path.realpath(__file__)) + os.sep)
         startup_commands = settings.get('startup_commands', '')
         interactivity_lines_to_suppress = settings.get('lines_to_suppress', 0)
-        shortcuts = settings.get('text_shortcuts', '@->##param##')
-        for shortcut in re.split('\r?\n', shortcuts):
-            line = re.split('\\s*\\->\\s*', shortcut)
-            if len(line) > 1:
-                line[1] = re.sub('^\\s*\\->\\s*', '', shortcut[len(line[0]):])
-                interactivity_shortcuts[line[0]] = line[1]
+        shortcuts = settings.get('text_shortcuts', {'@': '##param##'})
+        for k, v in shortcuts.items():
+            interactivity_shortcuts[k] = v
         interactivity_shortcuts = dict(sorted(interactivity_shortcuts.items(), key=lambda item: -len(item[0])))
-        shell_params = settings.get('shell_params', '')
-        shell_params = shell_params.replace('##plugin##', os.path.dirname(os.path.realpath(__file__)) + os.sep)
-        custom_env = settings.get('enviroment_variables', '')
-        custom_env = custom_env.replace('##plugin##', os.path.dirname(os.path.realpath(__file__)) + os.sep)
+        shell_params = settings.get('shell_params', [])
+        custom_env = settings.get('enviroment_variables', {})
         env = os.environ.copy()
-        for e in re.split('\r?\n', custom_env):
-            line = re.split('\\s*=\\s*', e)
-            if len(line) > 1:
-                line[1] = re.sub('^\\s*=\\s*', '', e[len(line[0]):])
-                env[line[0]] = line[1]
+        for k, v in custom_env.items():
+            v = v.replace('##plugin##', os.path.dirname(os.path.realpath(__file__)) + os.sep)
+            env[k] = v
 
-        interactivity_subprocess = subprocess.Popen([shell_path] + re.split('\r?\n', shell_params),
+        interactivity_subprocess = subprocess.Popen([shell_path] + [x.replace('##plugin##', os.path.dirname(os.path.realpath(__file__)) + os.sep) for x in shell_params],
                                              stdin=subprocess.PIPE,
                                              stdout=subprocess.PIPE,
                                              stderr=subprocess.STDOUT,
@@ -135,7 +128,6 @@ def plugin_loaded() -> None:
         if startup_commands:
             interactivity_subprocess.stdin.write(startup_commands + '\n')
         interactivity_thread = Thread(target=enqueue_output, args=(interactivity_subprocess.stdout, interactivity_output_queue))
-        # interactivity_thread.daemon = True
         interactivity_thread.start()
         sublime.set_timeout_async(process_output, 0)
 

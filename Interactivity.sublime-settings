@@ -1,12 +1,20 @@
 {
-    "shell": "python",
-    "shell_params": "-qi\n##plugin##modules/py_manager.py",
-    "prepend_output": " ",
     "append_output": "",
-    "text_shortcuts": "@ -> ##param##\n@@ -> chat4(r\"\"\"##param##\"\"\")",
-    "enviroment_variables": "PYTHONIOENCODING=utf8",
+    "enviroment_variables": {
+        "PYTHONIOENCODING": "utf8"
+    },
     "lines_to_suppress": 0,
-    "startup_commands": "openai.api_key = 'sk-'\n",
-    "shutdown_commands": "exit()\n",
-    "output_filter": "^(?:(?:>>> )|(?:\\.\\.\\. ))+"
+    "output_filter": "^(?:(?:>>> )|(?:\\.\\.\\. ))+",
+    "prepend_output": " ",
+    "shell": "python",
+    "shell_params": [
+        "-qi",
+        "##plugin##modules/py_manager.py"
+    ],
+    "shutdown_commands": "exit()",
+    "startup_commands": "openai.api_key = 'sk-'",
+    "text_shortcuts": {
+        "@": "##param##",
+        "@@": "chat4(r\"\"\"##param## \"\"\", system=\"Use markdown and emojis. Be less formal.\")"
+    }
 }

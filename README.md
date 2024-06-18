@@ -97,14 +97,19 @@ Define commands to run before closing the shell.
 "shutdown_commands": "exit()",
 ```
 
-Specify shell command-line arguments, one per line. Use `##plugin##` to refer to the plugin's directory.
+Specify shell command-line arguments. Use `##plugin##` to refer to the plugin's directory.
 ```
-"shell_params": "-qi\n##plugin##modules/py_manager.py",
+"shell_params": [
+   "-qi",
+   "##plugin##modules/py_manager.py"
+],
 ```
 
-Set environment variables, one per line. Use `##plugin##` to refer to the plugin's directory.
+Set environment variables. Use `##plugin##` to refer to the plugin's directory.
 ```
-"enviroment_variables": "PYTHONIOENCODING=utf8",
+"enviroment_variables": {
+   "PYTHONIOENCODING": "utf8"
+},
 ```
 
 Specify the number of initial lines to skip (e.g., shell greetings).
@@ -127,9 +132,12 @@ Apply a RegExp pattern to filter the output.
 "output_filter": "^(?:(?:>>> )|(?:\\.\\.\\. ))+"
 ```
 
-Define text shortcuts for running commands. The text before '->' is the shortcut; the text after is the command to execute. Use `##param##` to include the line after the shortcut in the command.
+Define text shortcuts for running commands. The entry key is the shortcut; the entry vakue is the command to execute. Use `##param##` to include the line after the shortcut in the command.
 ```
-"text_shortcuts": "@ -> ##param##\n@@ -> chat4(r\"\"\"##param## \"\"\")",
+"text_shortcuts": {
+   "@": "##param##",
+   "@@": "chat4(r\"\"\"##param##\"\"\")"
+}
 ```
 
 Aside from using shortcuts, you can also run shell execution by selecting any part of your text and hitting the [Sublime Text hotkeys](https://www.sublimetext.com/docs/key_bindings.html) bound to the package's `Interactivity` command.
@@ -152,25 +160,19 @@ This setup allows you to directly execute the input text as a command.
 #### Example 2
 
 ```plaintext
-@@ -> chat4(r"""##param## """, system='Use markdown and emojis.')
+"text_shortcuts": {
+   "@@": "chat4(r\"\"\"##param## \"\"\", system=\"Use markdown and emojis.\")"
+}
 ```
 
 - `@@`: This is the shortcut you type at the beginning of a line in the editor.
-- `chat4(r"""##param## """, system='Use markdown and emojis.')`: This command calls the `chat` function from `chat.py` with specific parameters.
+- `chat4(r\"\"\"##param## \"\"\", system=\"Use markdown and emojis.\")`: This command calls the `chat4` function from `chat.py` with specific parameters.
 
 Let's break down the parameters:
-- `r"""##param## """`: This includes the text that follows the shortcut on the same line.
-- `system='Use markdown and emojis.'`: This sets the system ptompt for the chat.
+- `r\"\"\"##param## \"\"\"`: This includes the text that follows the shortcut on the same line.
+- `system=\"Use markdown and emojis.\"`: This sets the system ptompt for the chat.
 
 By using this shortcut, you can quickly initiate a chat with ChatGPT using predefined settings, making your workflow more efficient.
-
-#### Iterating Shortcuts
-
-You can iterate both shortcuts by dividing them with a new line in the editor:
-
-```plaintext
-@ -> ##param##\n@@ -> chat4(r"""##param## """, system='Use markdown and emojis.')
-```
 
 ## Setting up Python integration
 You can enhance the functionality by adding custom Python scripts to the `py_modules` directory within the plugin's directory. All global functions and variables in these scripts will be accessible within the editor.
