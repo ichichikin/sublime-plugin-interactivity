@@ -1,26 +1,30 @@
-# Interactivity: Calculations and Scripts for Sublime Text
+# Interactivity for Sublime Text: run Python, Node.js, Java, Perl, PHP, bash, or any other REPLs
 
-Sometimes you need to compute numbers or access data while working with text. It's handy to do this without leaving the [Sublime Text](https://www.sublimetext.com/) editor, using your favorite tools like Python, Perl, Node.js, or others.
+**[Feel free to ask any questions about the plugin on the Sublime Text forum!](https://forum.sublimetext.com/t/interactivity-run-python-node-js-java-perl-php-bash-or-any-other-repls/72775)**
+
+Interactivity lets you run local shell commands and scripts directly within your Sublime Text editor, providing the output alongside your written content. Use your favorite tools like Python, Node.js, Java, Perl, PHP, bash, or any other REPLs.
+
 For example, if you need to quickly calculate a project's budget while taking notes, you can type the numbers and hit Enter in the editor to execute the code in the desired REPL:
-```plaintext
+```markdown
 ## Mike's rate is $120. Thus, it will cost us:
+
 @120*8*21*12+8000
 249920
 ```
 
-This plugin allows you to run shell commands and scripts directly within the editor, providing their output right alongside your written content, making your workflow more dynamic and interactive.
-
 ## Installation
 
-1. **Clone the Repository:**
+To install the `Interactivity` package via Package Control, follow these steps:
 
-```bash
-git clone https://github.com/yourusername/sublime-interactivity-plugin.git
-```
+1. **Install Package Control (if you haven't already):**
+   - Open Sublime Text.
+   - Access the command palette by pressing `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (Mac).
+   - Type `Install Package Control` and press `Enter`.
 
-2. **Copy to Sublime Text Packages Directory:**
-
-Copy the cloned repository to your Sublime Text Packages directory. You can find this directory via Preferences > Browse Packages in Sublime Text.
+2. **Install the Plugin:**
+   - Open the command palette again by pressing `Ctrl+Shift+P` (Windows/Linux) or `Cmd+Shift+P` (Mac).
+   - Type `Package Control: Install Package` and press `Enter`.
+   - In the package list, type `Interactivity` and select it to install.
 
 ## Python Modules Collection
 
