@@ -1,0 +1,41 @@
+Interactivity 0.1.0
+===================
+
+Settings
+--------
+Open the settings with Preferences > Package Settings > Interactivity > Settings.
+Your own settings go to the right side, into Packages/User/Interactivity.sublime-settings.
+
+Changes made to the Interactivity.sublime-settings file inside the plugin's directory
+are lost when the plugin is updated. Package Control keeps the previous version of
+the plugin in its Backup folder, next to the Packages folder
+(Preferences > Browse Packages...).
+
+Your Python modules
+-------------------
+Put your own Python scripts into the Packages/User/Interactivity folder, which is kept
+when the plugin is updated.
+
+Text shortcuts
+--------------
+Enter runs text shortcuts like "@" in plain text, Markdown, reStructuredText, Org and
+AsciiDoc files, but not in code blocks of programming languages. Change this with the
+"enabled_selector" setting, or run "Interactivity: Toggle Text Shortcuts in This Tab"
+from the command palette.
+
+OpenAI API key
+--------------
+chat.py reads the key from the OPENAI_API_KEY environment variable, which can be set
+in the "environment_variables" setting. openai.api_key in "startup_commands" still works.
+
+chat.py uses the Responses API of OpenAI now, which needs openai 1.66 or newer
+(pip install --upgrade openai). chat() uses gpt-6-luna, a fast and cheap model.
+chat4() is called chat_plus() now and uses gpt-6-sol; the old name still works.
+
+Text shortcuts in your settings with r"""##param## """ work like ##param_str## now,
+which keeps quotes and backslashes in your text from breaking the command.
+
+Output panel
+------------
+"Interactivity: Show Output Panel" shows messages of the plugin, e.g. why a module
+is not loaded.

@@ -1,10 +1,21 @@
+# This file is a part of Interactivity plugin
+
 import os
 
 
-__all__ = []
-dir = os.path.dirname(__file__)
-for root, subdirs, files in os.walk(dir):
-    for f in files:
-        if f != '__init__.py' and f.endswith('.py') and not f.startswith('_'):
-            file = os.path.join(root, f)[len(dir) + 1:-3].replace(os.sep, '.')
-            __all__.append(file)
+# names of the modules (name.py) and packages (name/__init__.py) in a folder, except those starting with "_"
+def _module_names(folder) -> list:
+    names = []
+    for entry in sorted(os.listdir(folder)):
+        if entry.endswith('.py') and os.path.isfile(os.path.join(folder, entry)):
+            name = entry[:-3]
+        elif os.path.isfile(os.path.join(folder, entry, '__init__.py')):
+            name = entry
+        else:
+            continue
+        if name and not name.startswith(('_', '.')) and '.' not in name:
+            names.append(name)
+    return names
+
+
+__all__ = _module_names(os.path.dirname(os.path.abspath(__file__)))

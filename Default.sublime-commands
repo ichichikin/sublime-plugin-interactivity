@@ -1,0 +1,26 @@
+[
+    {
+        "caption": "Preferences: Interactivity Settings",
+        "command": "edit_settings",
+        "args": {
+            "base_file": "${packages}/Interactivity/Interactivity.sublime-settings",
+            "default": "{\n\t$0\n}\n"
+        }
+    },
+    {
+        "caption": "Interactivity: Run Line or Selection",
+        "command": "interactivity"
+    },
+    {
+        "caption": "Interactivity: Toggle Text Shortcuts in This Tab",
+        "command": "interactivity_toggle_shortcuts"
+    },
+    {
+        "caption": "Interactivity: Restart REPL",
+        "command": "interactivity_restart"
+    },
+    {
+        "caption": "Interactivity: Show Output Panel",
+        "command": "interactivity_show_output"
+    }
+]

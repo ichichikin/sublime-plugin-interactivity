@@ -1,20 +1,47 @@
 {
-    "append_output": "",
-    "enviroment_variables": {
-        "PYTHONIOENCODING": "utf8"
-    },
-    "lines_to_suppress": 0,
-    "output_filter": "^(?:(?:>>> )|(?:\\.\\.\\. ))+",
-    "prepend_output": " ",
+    // Path to the REPL executable. Use ##plugin## to refer to the plugin's directory.
+    // On Linux and macOS, "python" runs "python3" when there is one.
     "shell": "python",
+
+    // Command-line arguments of the REPL. Use ##plugin## to refer to the plugin's directory.
     "shell_params": [
         "-qi",
         "##plugin##modules/py_manager.py"
     ],
+
+    // Environment variables of the REPL. Use ##plugin## to refer to the plugin's directory.
+    // The chat module reads the OpenAI API key from "OPENAI_API_KEY".
+    "environment_variables": {
+        "PYTHONIOENCODING": "utf8"
+    },
+
+    // Commands to run after the REPL starts.
+    "startup_commands": "",
+
+    // Commands to run before the REPL is closed.
     "shutdown_commands": "exit()",
-    "startup_commands": "openai.api_key = 'sk-'",
+
+    // Text shortcuts: a line that starts with a shortcut runs the shortcut's command when Enter is pressed.
+    // ##param## is replaced with the text after the shortcut,
+    // ##param_str## with the same text as a quoted string literal (JSON syntax, valid in Python and JavaScript).
     "text_shortcuts": {
         "@": "##param##",
-        "@@": "chat4(r\"\"\"##param## \"\"\", system=\"Use markdown and emojis. Be less formal.\")"
-    }
+        "@@": "chat_plus(##param_str##, system=\"Use markdown and emojis. Be less formal.\")"
+    },
+
+    // Where text shortcuts run when Enter is pressed: a scope selector matched at the start of the line,
+    // or "" for everywhere. The default is plain text, Markdown, reStructuredText, Org and AsciiDoc,
+    // except code blocks of programming languages.
+    // "Interactivity: Toggle Text Shortcuts in This Tab" turns them on or off for one tab.
+    "enabled_selector": "text.plain, text.html.markdown - source, text.restructuredtext - source, text.orgmode - source, text.asciidoc - source",
+
+    // Text added in front of and after every line of output.
+    "prepend_output": " ",
+    "append_output": "",
+
+    // Regular expression removed from every line of output, e.g. "^(?:>>> |\\.\\.\\. )+" for the prompts of a REPL.
+    "output_filter": "",
+
+    // Number of lines of output to skip after the REPL starts (e.g. shell greetings).
+    "lines_to_suppress": 0
 }
